@@ -81,8 +81,14 @@ private extension ReviewsViewModel {
     func makeReviewItem(_ review: Review) -> ReviewItem {
         let reviewText = review.text.attributed(font: .text)
         let created = review.created.attributed(font: .created, color: .created)
+        let avatar = review.avatar
+        let rating = review.rating
+        let fullName = review.fullName.attributed(font: .username)
         let item = ReviewItem(
             reviewText: reviewText,
+            rating: rating,
+            avatar: avatar,
+            fullName: fullName,
             created: created,
             onTapShowMore: showMoreReview
         )
@@ -101,7 +107,8 @@ extension ReviewsViewModel: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let config = state.items[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: config.reuseId, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: config.reuseId, for: indexPath) as! ReviewCell
+        cell.delegate = self
         config.update(cell: cell)
         return cell
     }
@@ -139,4 +146,12 @@ extension ReviewsViewModel: UITableViewDelegate {
         return remainingDistance <= triggerDistance
     }
 
+}
+
+//MARK: - ReviewCellDelegate
+
+extension ReviewsViewModel: ReviewCellDelegate {
+    func didTapShowMore(for rewiewId: UUID) {
+        showMoreReview(with: rewiewId)
+    }
 }
