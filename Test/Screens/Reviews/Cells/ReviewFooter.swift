@@ -18,6 +18,18 @@ final class ReviewFooterView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+//MARK: - Internal
+
+extension ReviewFooterView {
+    
+    func configure(with count: Int) {
+        totalReviewsLabel.attributedText = "\(count) отзывов".attributed(font: .reviewCount, color: .reviewCount )
+    }
+}
+
+//MARK: - Private
+private extension ReviewFooterView {
     
     func setupView() {
         backgroundColor = .systemBackground
@@ -32,9 +44,5 @@ final class ReviewFooterView: UIView {
             totalReviewsLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             totalReviewsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
-    }
-    
-    func configure(with count: Int) {
-        totalReviewsLabel.attributedText = "\(count) отзывов".attributed(font: .reviewCount, color: .reviewCount )
-    }
+    }    
 }
