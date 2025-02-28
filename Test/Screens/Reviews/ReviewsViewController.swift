@@ -3,6 +3,8 @@ import UIKit
 final class ReviewsViewController: UIViewController {
 
     private lazy var reviewsView = makeReviewsView()
+    private var spinnerView = UIActivityIndicatorView()
+    private let refreshControl = UIRefreshControl()
     private let viewModel: ReviewsViewModel
 
     init(viewModel: ReviewsViewModel) {
@@ -23,6 +25,7 @@ final class ReviewsViewController: UIViewController {
         super.viewDidLoad()
         setupViewModel()
         viewModel.getReviews()
+        configureRefreshControl()
     }
 
 }
@@ -43,5 +46,17 @@ private extension ReviewsViewController {
             reviewsView?.tableView.reloadData()
         }
     }
+
+    func configureRefreshControl() {
+        reviewsView.tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshControlUsed), for: .valueChanged)
+    }
+    
+    @objc func refreshControlUsed() {
+        viewModel.refreshData()
+        reviewsView.tableView.reloadData()
+        refreshControl.endRefreshing()
+    }
+
 
 }

@@ -10,6 +10,8 @@ final class ReviewsViewModel: NSObject {
     private let reviewsProvider: ReviewsProvider
     private let ratingRenderer: RatingRenderer
     private let decoder: JSONDecoder
+    
+    
 
     init(
         state: State = State(),
@@ -37,6 +39,13 @@ extension ReviewsViewModel {
         state.shouldLoad = false
         reviewsProvider.getReviews(offset: state.offset, completion: gotReviews)
     }
+    ///  Метод для обновления данных
+    func refreshData() {
+        state.items.removeAll()
+        state.offset = 0
+        state.shouldLoad = true
+        getReviews()
+    }
 
 }
 
@@ -56,7 +65,7 @@ private extension ReviewsViewModel {
         } catch {
             state.shouldLoad = true
         }
-        onStateChange?(state)
+            onStateChange?(state)
     }
 
     /// Метод, вызываемый при нажатии на кнопку "Показать полностью...".
@@ -70,6 +79,7 @@ private extension ReviewsViewModel {
         state.items[index] = item
         onStateChange?(state)
     }
+    
 
 }
 
@@ -113,6 +123,12 @@ extension ReviewsViewModel: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: config.reuseId, for: indexPath) as! ReviewCell
         cell.delegate = self
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = ReviewFooterView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
+        footerView.configure(with: state.totalItemsCount ?? 0)
+        return footerView
     }
 
 }

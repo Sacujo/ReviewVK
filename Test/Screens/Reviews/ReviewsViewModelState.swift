@@ -2,7 +2,7 @@
 struct ReviewsViewModelState {
 
     var items = [any TableCellConfig]()
-    var limit = 30
+    var limit = 20
     var offset = 0
     var shouldLoad = true
     var totalItemsCount: Int?
