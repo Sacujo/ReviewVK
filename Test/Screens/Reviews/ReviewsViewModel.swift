@@ -50,6 +50,7 @@ private extension ReviewsViewModel {
             let data = try result.get()
             let reviews = try decoder.decode(Reviews.self, from: data)
             state.items += reviews.items.map(makeReviewItem)
+            state.totalItemsCount = reviews.count
             state.offset += state.limit
             state.shouldLoad = state.offset < reviews.count
         } catch {
@@ -83,12 +84,14 @@ private extension ReviewsViewModel {
         let created = review.created.attributed(font: .created, color: .created)
         let avatar = review.avatar
         let rating = review.rating
+        let photosURL = review.photosURL?.map { $0.url }
         let fullName = review.fullName.attributed(font: .username)
         let item = ReviewItem(
             reviewText: reviewText,
             rating: rating,
             avatar: avatar,
             fullName: fullName,
+            photos: photosURL,
             created: created,
             onTapShowMore: showMoreReview
         )
@@ -109,7 +112,6 @@ extension ReviewsViewModel: UITableViewDataSource {
         let config = state.items[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: config.reuseId, for: indexPath) as! ReviewCell
         cell.delegate = self
-        config.update(cell: cell)
         return cell
     }
 
@@ -121,6 +123,11 @@ extension ReviewsViewModel: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         state.items[indexPath.row].height(with: tableView.bounds.size)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let config = state.items[indexPath.row]
+        config.update(cell: cell)
     }
 
     /// Метод дозапрашивает отзывы, если до конца списка отзывов осталось два с половиной экрана по высоте.

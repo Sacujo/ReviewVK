@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "domino-studio-164_6wVEHfI-unsplash.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "domino-studio-164_6wVEHfI-unsplash 1.jpg",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "domino-studio-164_6wVEHfI-unsplash 2.jpg",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
