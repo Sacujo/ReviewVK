@@ -85,6 +85,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		15E9D87E2D73CED00054BAA9 /* Photo */ = {
+			isa = PBXGroup;
+			children = (
+				15E9D87A2D73B2360054BAA9 /* PhotoViewController.swift */,
+			);
+			path = Photo;
+			sourceTree = "<group>";
+		};
 		2166686D2D48DEBF009AAA76 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -108,7 +116,6 @@
 				15E9D8782D726ED70054BAA9 /* PhotoCell.swift */,
 				150FE6AA2D71B01A00828C9B /* ReviewFooter.swift */,
 				21B82E252D47B0640085DAA2 /* ReviewCell.swift */,
-				15E9D87A2D73B2360054BAA9 /* PhotoViewController.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -152,6 +159,7 @@
 		21B82E2A2D47B0640085DAA2 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				15E9D87E2D73CED00054BAA9 /* Photo */,
 				21ED1F632D69CF860012D6F6 /* Root */,
 				21B82E372D47B1090085DAA2 /* Reviews */,
 			);

@@ -89,7 +89,6 @@ final class ReviewCell: UITableViewCell {
     fileprivate let ratingImageView = UIImageView()
     fileprivate let reviewPhotoImageView = UIImageView()
     fileprivate let photosView = UIView()
-//    fileprivate let photoStackView = UIStackView()
     fileprivate var photoCollectionView: UICollectionView?
     
 
@@ -208,7 +207,6 @@ private final class ReviewCellLayout {
     private(set) var ratingImageViewFrame = CGRect.zero
     private(set) var fullNameLabelFrame = CGRect.zero
     private(set) var reviewPhotoImageViewFrame = CGRect.zero
-//    private(set) var photoStackViewFrame = CGRect.zero
     private(set) var photoCollectionViewFrame = CGRect.zero
 
     // MARK: - Отступы
@@ -290,8 +288,6 @@ private final class ReviewCellLayout {
             maxY = reviewTextLabelFrame.maxY + reviewTextToCreatedSpacing
         }
         
-        
-
         if showShowMoreButton {
             showMoreButtonFrame = CGRect(
                 origin: CGPoint(x: currentXPoint, y: maxY),
@@ -307,8 +303,6 @@ private final class ReviewCellLayout {
             size: config.created.boundingRect(width: width).size
         )
         
-        
-
         return createdLabelFrame.maxY + insets.bottom
     }
 }
