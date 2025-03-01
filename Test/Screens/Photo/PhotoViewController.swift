@@ -11,7 +11,7 @@ final class PhotoViewController: UIViewController {
     
     var photoUrl: String!
     
-    var imageView = UIImageView()
+    private var imageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ final class PhotoViewController: UIViewController {
         imageView.frame = view.bounds
     }
     
-    func setupView() {
+    private func setupView() {
         view.backgroundColor = .systemBackground
         
         imageView.contentMode = .scaleAspectFit

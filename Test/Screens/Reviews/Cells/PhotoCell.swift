@@ -10,6 +10,7 @@ import UIKit
 final class PhotoCell: UICollectionViewCell {
     
     static let reuseId = String(describing: PhotoCell.self)
+    
     var imageView = UIImageView()
     
     required init?(coder: NSCoder) {
@@ -26,7 +27,7 @@ final class PhotoCell: UICollectionViewCell {
         imageView.frame = contentView.bounds
     }
     
-    func setupCell() {
+    private func setupCell() {
         contentView.addSubview(imageView)
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(named: "avatar")
