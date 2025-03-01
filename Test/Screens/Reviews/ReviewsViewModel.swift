@@ -1,11 +1,16 @@
 import UIKit
 
+protocol ReviewsViewModelDelegate: AnyObject {
+    func didTapOnCell(with photoUrl: String)
+}
 /// Класс, описывающий бизнес-логику экрана отзывов.
 final class ReviewsViewModel: NSObject {
 
     /// Замыкание, вызываемое при изменении `state`.
     var onStateChange: ((State) -> Void)?
 
+    weak var delegate: ReviewsViewModelDelegate?
+    
     private var state: State
     private let reviewsProvider: ReviewsProvider
     private let ratingRenderer: RatingRenderer
@@ -176,5 +181,11 @@ extension ReviewsViewModel: UITableViewDelegate {
 extension ReviewsViewModel: ReviewCellDelegate {
     func didTapShowMore(for rewiewId: UUID) {
         showMoreReview(with: rewiewId)
+    }
+    
+    func collectionView(collectionviewcell: PhotoCell?, index: Int, didTappedInTableViewCell: ReviewCell) {
+        if let photoUrl = didTappedInTableViewCell.selectedPhotoUrl {
+            delegate?.didTapOnCell(with: photoUrl)
+        }
     }
 }

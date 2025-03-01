@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		150FE6AB2D71B01E00828C9B /* ReviewFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150FE6AA2D71B01A00828C9B /* ReviewFooter.swift */; };
 		15C88E612D6C8CB4001D0D0C /* UIImageView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C88E602D6C8CAA001D0D0C /* UIImageView+Ext.swift */; };
+		15E9D8742D7265C60054BAA9 /* CustomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E9D8732D7265B80054BAA9 /* CustomSpinner.swift */; };
+		15E9D8762D7267D10054BAA9 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E9D8752D7267B70054BAA9 /* UIColor+Ext.swift */; };
+		15E9D8792D726EE20054BAA9 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E9D8782D726ED70054BAA9 /* PhotoCell.swift */; };
+		15E9D87B2D73B2B90054BAA9 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E9D87A2D73B2360054BAA9 /* PhotoViewController.swift */; };
 		2166686F2D48E23F009AAA76 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2166686E2D48E23F009AAA76 /* Fonts.swift */; };
 		216668712D48E4B2009AAA76 /* NSAttributedString+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216668702D48E4B2009AAA76 /* NSAttributedString+Ext.swift */; };
 		216668732D48E89A009AAA76 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216668722D48E89A009AAA76 /* Colors.swift */; };
@@ -34,6 +38,10 @@
 /* Begin PBXFileReference section */
 		150FE6AA2D71B01A00828C9B /* ReviewFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewFooter.swift; sourceTree = "<group>"; };
 		15C88E602D6C8CAA001D0D0C /* UIImageView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
+		15E9D8732D7265B80054BAA9 /* CustomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSpinner.swift; sourceTree = "<group>"; };
+		15E9D8752D7267B70054BAA9 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
+		15E9D8782D726ED70054BAA9 /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		15E9D87A2D73B2360054BAA9 /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		2166686E2D48E23F009AAA76 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		216668702D48E4B2009AAA76 /* NSAttributedString+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Ext.swift"; sourceTree = "<group>"; };
 		216668722D48E89A009AAA76 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -68,6 +76,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15E9D8772D726A6E0054BAA9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2166A0F32D4A5B25009AAA76 /* ReviewsView.swift */,
+				15E9D8732D7265B80054BAA9 /* CustomSpinner.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		2166686D2D48DEBF009AAA76 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -88,8 +105,10 @@
 		216668752D48F39E009AAA76 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				15E9D8782D726ED70054BAA9 /* PhotoCell.swift */,
 				150FE6AA2D71B01A00828C9B /* ReviewFooter.swift */,
 				21B82E252D47B0640085DAA2 /* ReviewCell.swift */,
+				15E9D87A2D73B2360054BAA9 /* PhotoViewController.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -113,6 +132,7 @@
 		21B82E222D47B0640085DAA2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				15E9D8752D7267B70054BAA9 /* UIColor+Ext.swift */,
 				15C88E602D6C8CAA001D0D0C /* UIImageView+Ext.swift */,
 				21B8416E2D47C4C60085DAA2 /* String+Ext.swift */,
 				216668702D48E4B2009AAA76 /* NSAttributedString+Ext.swift */,
@@ -155,9 +175,9 @@
 		21B82E372D47B1090085DAA2 /* Reviews */ = {
 			isa = PBXGroup;
 			children = (
+				15E9D8772D726A6E0054BAA9 /* Views */,
 				21B82E292D47B0640085DAA2 /* ReviewsViewController.swift */,
 				21ED1F642D69D0340012D6F6 /* ReviewsScreenFactory.swift */,
-				2166A0F32D4A5B25009AAA76 /* ReviewsView.swift */,
 				21B8416C2D47C0E20085DAA2 /* ReviewsViewModelState.swift */,
 				21B82E332D47B0AA0085DAA2 /* ReviewsViewModel.swift */,
 				21B82E352D47B0D80085DAA2 /* ReviewsProvider.swift */,
@@ -271,6 +291,7 @@
 				21B82E2E2D47B0640085DAA2 /* ReviewCell.swift in Sources */,
 				21ED1F622D69CBCD0012D6F6 /* RootView.swift in Sources */,
 				21667B802D4A25B2009AAA76 /* RatingRenderer.swift in Sources */,
+				15E9D87B2D73B2B90054BAA9 /* PhotoViewController.swift in Sources */,
 				216668712D48E4B2009AAA76 /* NSAttributedString+Ext.swift in Sources */,
 				21B82E362D47B0D80085DAA2 /* ReviewsProvider.swift in Sources */,
 				21ED1F602D69C85E0012D6F6 /* RootViewController.swift in Sources */,
@@ -278,10 +299,13 @@
 				15C88E612D6C8CB4001D0D0C /* UIImageView+Ext.swift in Sources */,
 				21B8416B2D47BFA10085DAA2 /* Reviews.swift in Sources */,
 				21B82E302D47B0640085DAA2 /* ReviewsViewController.swift in Sources */,
+				15E9D8792D726EE20054BAA9 /* PhotoCell.swift in Sources */,
 				2166A0F42D4A5B25009AAA76 /* ReviewsView.swift in Sources */,
 				216668732D48E89A009AAA76 /* Colors.swift in Sources */,
 				21B841712D47C5F00085DAA2 /* TableCellConfig.swift in Sources */,
+				15E9D8762D7267D10054BAA9 /* UIColor+Ext.swift in Sources */,
 				21ED1F652D69D0340012D6F6 /* ReviewsScreenFactory.swift in Sources */,
+				15E9D8742D7265C60054BAA9 /* CustomSpinner.swift in Sources */,
 				2166686F2D48E23F009AAA76 /* Fonts.swift in Sources */,
 				21B82E312D47B0640085DAA2 /* AppDelegate.swift in Sources */,
 				150FE6AB2D71B01E00828C9B /* ReviewFooter.swift in Sources */,

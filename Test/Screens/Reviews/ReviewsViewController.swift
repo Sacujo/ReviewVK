@@ -3,8 +3,8 @@ import UIKit
 final class ReviewsViewController: UIViewController {
 
     private lazy var reviewsView = makeReviewsView()
-    private var spinnerView = UIActivityIndicatorView()
     private let refreshControl = UIRefreshControl()
+    private var customSpinner = CustomSpinner()
     private let viewModel: ReviewsViewModel
 
     init(viewModel: ReviewsViewModel) {
@@ -26,8 +26,9 @@ final class ReviewsViewController: UIViewController {
         setupViewModel()
         viewModel.getReviews()
         configureRefreshControl()
+        configureCustomSpinner()
+        viewModel.delegate = self
     }
-
 }
 
 // MARK: - Private
@@ -42,8 +43,9 @@ private extension ReviewsViewController {
     }
 
     func setupViewModel() {
-        viewModel.onStateChange = { [weak reviewsView] _ in
+        viewModel.onStateChange = { [weak reviewsView, unowned self] _ in
             reviewsView?.tableView.reloadData()
+            customSpinner.stopAnimation()
         }
     }
 
@@ -52,11 +54,26 @@ private extension ReviewsViewController {
         refreshControl.addTarget(self, action: #selector(refreshControlUsed), for: .valueChanged)
     }
     
+    func configureCustomSpinner() {
+        customSpinner = CustomSpinner(squareLength: 50)
+        reviewsView.addSubview(customSpinner)
+        customSpinner.startAnimation(delay: 0.04, replicates: 20)
+    }
+
     @objc func refreshControlUsed() {
         viewModel.refreshData()
         reviewsView.tableView.reloadData()
         refreshControl.endRefreshing()
     }
+}
 
-
+extension ReviewsViewController: ReviewsViewModelDelegate {
+    func didTapOnCell(with photoUrl: String) {
+        let vc = PhotoViewController()
+        vc.photoUrl = photoUrl
+        navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    
+    
 }

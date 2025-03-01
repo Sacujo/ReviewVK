@@ -2,6 +2,7 @@ import UIKit
 
 protocol ReviewCellDelegate: AnyObject {
     func didTapShowMore(for rewiewId: UUID)
+    func collectionView(collectionviewcell: PhotoCell?, index: Int, didTappedInTableViewCell: ReviewCell)
 }
 
 /// Конфигурация ячейки. Содержит данные для отображения в ячейке.
@@ -48,14 +49,7 @@ extension ReviewCellConfig: TableCellConfig {
         cell.avatarImageView.imageFromServerURL(avatar ?? "", placeHolder: UIImage(named: "avatar"))
         cell.ratingImageView.image = RatingRenderer().ratingImage(rating)
         cell.fullNameLabel.attributedText = fullName
-        if let photos = photos, !photos.isEmpty {
-            for index in 0..<photos.count {
-                if let photo = cell.photoStackView.subviews[index] as? UIImageView {
-                    photo.imageFromServerURL(photos[index], placeHolder: nil)
-                    photo.alpha = 1
-                }
-            }
-        }
+        cell.photoCollectionView?.reloadData()
         cell.config = self
     }
 
@@ -83,6 +77,8 @@ final class ReviewCell: UITableViewCell {
     
     weak var delegate: ReviewCellDelegate?
     
+    var selectedPhotoUrl: String?
+    
     fileprivate var config: Config?
     
     fileprivate let reviewTextLabel = UILabel()
@@ -93,7 +89,8 @@ final class ReviewCell: UITableViewCell {
     fileprivate let ratingImageView = UIImageView()
     fileprivate let reviewPhotoImageView = UIImageView()
     fileprivate let photosView = UIView()
-    fileprivate let photoStackView = UIStackView()
+//    fileprivate let photoStackView = UIStackView()
+    fileprivate var photoCollectionView: UICollectionView?
     
 
     required init?(coder: NSCoder) {
@@ -116,7 +113,7 @@ final class ReviewCell: UITableViewCell {
         fullNameLabel.frame = layout.fullNameLabelFrame
         ratingImageView.frame = layout.ratingImageViewFrame
         reviewPhotoImageView.frame = layout.reviewPhotoImageViewFrame
-        photoStackView.frame = layout.photoStackViewFrame
+        photoCollectionView?.frame = layout.photoCollectionViewFrame
     }
 
 }
@@ -132,8 +129,7 @@ private extension ReviewCell {
         setupAvatarImageView()
         setupRatingImageView()
         setupFullnameLabel()
-        setupReviewPhotoImageView()
-        setupPhotoStackView()
+        setupPhotoCollectionView()
     }
 
     func setupReviewTextLabel() {
@@ -166,29 +162,20 @@ private extension ReviewCell {
         contentView.addSubview(fullNameLabel)
     }
     
-    func setupReviewPhotoImageView() {
-        contentView.addSubview(reviewPhotoImageView)
-        reviewPhotoImageView.layer.cornerRadius = Layout.photoCornerRadius
-        reviewPhotoImageView.clipsToBounds = true
-        reviewPhotoImageView.contentMode = .scaleAspectFill
+    func setupPhotoCollectionView() {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = Layout.photoSize
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 8
+        photoCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        photoCollectionView?.showsHorizontalScrollIndicator = false
+        photoCollectionView?.delegate = self
+        photoCollectionView?.dataSource = self
+        photoCollectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.reuseId)
+        contentView.addSubview(photoCollectionView!)
     }
-    
-    func setupPhotoStackView() {
-        contentView.addSubview(photoStackView)
-        for _ in 0..<5 {
-            let imageView = UIImageView()
-            imageView.contentMode = .scaleAspectFill
-            imageView.layer.cornerRadius = Layout.photoCornerRadius
-            imageView.clipsToBounds = true
-            imageView.alpha = 0.0
-            photoStackView.addArrangedSubview(imageView)
-        }
-        photoStackView.axis = .horizontal
-        photoStackView.alignment = .leading
-        photoStackView.spacing = 8.0
-        photoStackView.distribution = .fillEqually
-        }
-    
+
     @objc func showMoreButtonTapped() {
         guard let rewiewId = config?.id else { return }
         delegate?.didTapShowMore(for: rewiewId)
@@ -209,7 +196,7 @@ private final class ReviewCellLayout {
     fileprivate static let photoCornerRadius = 8.0
     fileprivate static let ratingSize = CGSize(width: 85.0, height: 16.0)
 
-    private static let photoSize = CGSize(width: 55.0, height: 66.0)
+    fileprivate static let photoSize = CGSize(width: 55.0, height: 66.0)
     private static let showMoreButtonSize = Config.showMoreText.size()
 
     // MARK: - Фреймы
@@ -221,7 +208,8 @@ private final class ReviewCellLayout {
     private(set) var ratingImageViewFrame = CGRect.zero
     private(set) var fullNameLabelFrame = CGRect.zero
     private(set) var reviewPhotoImageViewFrame = CGRect.zero
-    private(set) var photoStackViewFrame = CGRect.zero
+//    private(set) var photoStackViewFrame = CGRect.zero
+    private(set) var photoCollectionViewFrame = CGRect.zero
 
     // MARK: - Отступы
 
@@ -279,8 +267,8 @@ private final class ReviewCellLayout {
         if let photos = config.photos {
             maxY = ratingImageViewFrame.maxY + ratingToPhotosSpacing
             if !photos.isEmpty {
-                photoStackViewFrame = CGRect(origin: CGPoint(x: currentXPoint, y: maxY), size: CGSize(width: 330, height: 80))
-                maxY = photoStackViewFrame.maxY + photosToTextSpacing
+                photoCollectionViewFrame = CGRect(origin: CGPoint(x: currentXPoint, y: maxY), size: CGSize(width: 330, height: 80))
+                maxY = photoCollectionViewFrame.maxY + photosToTextSpacing
                 
             }
         } else {
@@ -302,6 +290,7 @@ private final class ReviewCellLayout {
             maxY = reviewTextLabelFrame.maxY + reviewTextToCreatedSpacing
         }
         
+        
 
         if showShowMoreButton {
             showMoreButtonFrame = CGRect(
@@ -322,9 +311,31 @@ private final class ReviewCellLayout {
 
         return createdLabelFrame.maxY + insets.bottom
     }
+}
+
+extension ReviewCell: UICollectionViewDelegate {
+
+}
+
+extension ReviewCell: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        config?.photos?.count ?? 5
+    }
     
-
-
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.reuseId, for: indexPath) as? PhotoCell else {
+            return UICollectionViewCell()
+        }
+        cell.configure(with: config?.photos?[indexPath.row] ?? "")
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedPhotoUrl = config?.photos?[indexPath.item]
+        guard let cell = collectionView.cellForItem(at: indexPath) as? PhotoCell else { return }
+        delegate?.collectionView(collectionviewcell: cell, index: indexPath.item, didTappedInTableViewCell: self)
+        
+    }
 }
 
 // MARK: - Typealias
